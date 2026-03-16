@@ -1,0 +1,9 @@
+services:
+  alexa-skill:
+    build: .
+    container_name: alexa_skill_314
+    restart: always
+    ports:
+      - "80:80"
+    env_file:
+      - .env

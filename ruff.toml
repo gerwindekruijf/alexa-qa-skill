@@ -1,0 +1,31 @@
+# ruff.toml
+line-length = 100
+
+[lint]
+# E, W: PEP8 errors/warnings
+# F: Pyflakes (bugs)
+# I: isort (imports)
+# B: flake8-bugbear (common bugs)
+# UP: pyupgrade (modern python syntax)
+# SIM: flake8-simplify (code simplification)
+# RUF: Ruff-specific rules
+select = ["E", "W", "F", "I", "B", "UP", "SIM", "RUF"]
+
+# Ignore line-length (E501) because ruff format handles it, 
+# and sometimes we want long strings/URLs to stay intact.
+ignore = ["E501"]
+
+# Allow fixing all enabled rules
+fixable = ["ALL"]
+
+[format]
+# Double quotes are the modern standard (Black default)
+quote-style = "double"
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+# Enable auto-formatting of code examples in docstrings
+docstring-code-format = true
