@@ -8,6 +8,13 @@ wheels/
 
 # Virtual environments
 .venv
+*env
 
 # Ruff
 .ruff_cache/
+
+# MD files
+*.md
+
+# Shell scripts
+*.sh
