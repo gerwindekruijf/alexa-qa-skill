@@ -65,7 +65,7 @@ You need:
 
 ## 2. Add the invocation name
 
-Set an invocation name users can say naturally, like "Mini Link"
+Set an invocation name users can say naturally: `Mini Link`
 
 ## 3. Add intents and phrases
 
@@ -95,9 +95,9 @@ After editing:
 
 ## 4. Get the required env values
 
-Create a local `.env` file first, then copy that same file to EC2 later.
+Create a local `.env` file first from `.env.example`
 
-Example:
+Keys:
 
 ```env
 GEMINI_API_KEY=
@@ -172,7 +172,7 @@ ALEXA_SKILL_ID=your_skill_id_here
 
 ## 5. Create the local `.env`
 
-Create `deploy_config/.env`:
+Create `.env`:
 
 ```env
 GEMINI_API_KEY=your_gemini_key_here
@@ -180,16 +180,6 @@ AWS_ACCESS_KEY_ID=your_access_key_id
 AWS_SECRET_ACCESS_KEY=your_secret_access_key
 AWS_DEFAULT_REGION=eu-central-1
 ALEXA_SKILL_ID=your_skill_id_here
-```
-
-Do not commit the real `.env` file.
-
-Example `.gitignore`:
-
-```gitignore
-.env
-deploy_config/.env
-alexa-key.pem
 ```
 
 ## 6. Create an ECR repository
@@ -279,27 +269,7 @@ ssh -i alexa-key.pem ec2-user@<EC2_IP>
 
 ## 10. Create the deploy script
 
-Create `deploy_config/up.sh`:
-
-```bash
-#!/bin/bash
-set -euxo pipefail
-
-aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.eu-central-1.amazonaws.com
-
-REPO="<AWS_ACCOUNT_ID>.dkr.ecr.eu-central-1.amazonaws.com/alexa-skill"
-
-docker pull $REPO:latest
-docker stop alexa_skill || true
-docker rm alexa_skill || true
-
-docker run -d \
-  --name alexa_skill \
-  --restart always \
-  -p 80:80 \
-  --env-file .env \
-  $REPO:latest
-```
+Fill in `up.sh` with your aws credentials information, see previous steps
 
 ## 11. Copy `.env` and `up.sh` to EC2
 
@@ -434,7 +404,7 @@ docker push <AWS_ACCOUNT_ID>.dkr.ecr.eu-central-1.amazonaws.com/alexa-skill:late
 ssh -i alexa-key.pem ec2-user@<EC2_IP> "chmod +x up.sh && ./up.sh"
 ```
 
-## Quick start
+## All commands
 
 ```bash
 aws ecr create-repository --repository-name alexa-skill --region eu-central-1
