@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/assets/logo.png" alt="Alexa Skill Logo" width="140" />
+  <img src="/assets/logo.png" alt="Alexa Skill Logo" />
 </p>
 
 <h1 align="center">Alexa Q&A Skill</h1>
@@ -26,7 +26,7 @@ It covers:
 3. Configuring the skill endpoint
 4. Creating an API Gateway in AWS
 5. Hosting the backend on EC2
-6. Getting a Gemini API key from Google Cloud
+6. Getting a Gemini API key from Google AI Studio
 7. Building and pushing the Docker image to Amazon ECR
 8. Pulling and running the container on EC2
 
@@ -65,13 +65,7 @@ You need:
 
 ## 2. Add the invocation name
 
-Set an invocation name users can say naturally.
-
-Examples:
-
-1. `mini link`
-2. `smart helper`
-3. `home assistant bot`
+Set an invocation name users can say naturally, like "Mini Link"
 
 ## 3. Add intents and phrases
 
@@ -86,8 +80,6 @@ Example utterances:
 1. `ask {question}`
 2. `question {question}`
 3. `tell me {question}`
-4. `search for {question}`
-5. `help me with {question}`
 
 Keep these built in intents too:
 
@@ -101,17 +93,104 @@ After editing:
 1. Click **Save Model**
 2. Click **Build Model**
 
-## 4. Get a Gemini API key
+## 4. Get the required env values
 
-Create or select a Google Cloud project and generate a Gemini API key.
+Create a local `.env` file first, then copy that same file to EC2 later.
 
-## 5. Necessary .env variables
+Example:
 
-Copy `.env.example`
+```env
+GEMINI_API_KEY=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_DEFAULT_REGION=eu-central-1
+ALEXA_SKILL_ID=
+```
 
-Add all the necessary keys
+### GEMINI_API_KEY
 
-Save file as `.env`
+Get this from Google AI Studio.
+
+Steps:
+
+1. Open [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. Sign in with your Google account
+3. Create or select a project
+4. Create an API key
+5. Copy it into:
+
+```env
+GEMINI_API_KEY=your_gemini_key_here
+```
+
+More info: [Gemini API key docs](https://ai.google.dev/gemini-api/docs/api-key)
+
+### AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
+
+These are AWS access keys for an IAM user.
+
+Steps:
+
+1. Open AWS Console
+2. Go to **IAM**
+3. Open **Users**
+4. Create a user or select an existing user
+5. Open the **Security credentials** tab
+6. Under **Access keys**, click **Create access key**
+7. Copy the generated values into:
+
+```env
+AWS_ACCESS_KEY_ID=your_access_key_id
+AWS_SECRET_ACCESS_KEY=your_secret_access_key
+```
+
+### AWS_DEFAULT_REGION
+
+Set this to the region you use for ECR, EC2, and API Gateway.
+
+Example:
+
+```env
+AWS_DEFAULT_REGION=eu-central-1
+```
+
+### ALEXA_SKILL_ID
+
+Get this from the Alexa Developer Console.
+
+Steps:
+
+1. Open the Alexa Developer Console
+2. Go to **Your Skills**
+3. Select your skill
+4. Copy the **Skill ID**
+5. Paste it into:
+
+```env
+ALEXA_SKILL_ID=your_skill_id_here
+```
+
+## 5. Create the local `.env`
+
+Create `deploy_config/.env`:
+
+```env
+GEMINI_API_KEY=your_gemini_key_here
+AWS_ACCESS_KEY_ID=your_access_key_id
+AWS_SECRET_ACCESS_KEY=your_secret_access_key
+AWS_DEFAULT_REGION=eu-central-1
+ALEXA_SKILL_ID=your_skill_id_here
+```
+
+Do not commit the real `.env` file.
+
+Example `.gitignore`:
+
+```gitignore
+.env
+deploy_config/.env
+alexa-key.pem
+```
 
 ## 6. Create an ECR repository
 
@@ -163,7 +242,7 @@ Recommended setup:
 
 1. Name: `Alexa-Skill-Server`
 2. OS: Amazon Linux 2023
-3. Instance type: use a Free Tier eligible micro instance where available
+3. Instance type: use a Free Tier eligible micro instance if your AWS account supports it
 4. Public IP: enabled
 5. Security group:
    1. Allow SSH from your own IP
@@ -224,7 +303,7 @@ docker run -d \
 
 ## 11. Copy `.env` and `up.sh` to EC2
 
-Your `.env` must also exist on the EC2 server because Docker uses it there.
+Your `.env` must also exist on the EC2 server because Docker reads it there when the container starts.
 
 Copy `.env`:
 
