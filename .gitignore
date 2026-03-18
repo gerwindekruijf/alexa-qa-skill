@@ -12,9 +12,3 @@ wheels/
 
 # Ruff
 .ruff_cache/
-
-# MD files
-*.md
-
-# Shell scripts
-*.sh
