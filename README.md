@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/logo.svg" alt="Alexa Skill Logo" width="140" />
+  <img src="/assets/logo.svg" alt="Alexa Skill Logo" width="140" />
 </p>
 
 <h1 align="center">Alexa Q&A Skill</h1>
@@ -107,11 +107,11 @@ Create or select a Google Cloud project and generate a Gemini API key.
 
 ## 5. Necessary .env variables
 
-GEMINI_API_KEY=
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY=
-AWS_DEFAULT_REGION=eu-central-1
-ALEXA_SKILL_ID=
+Copy `.env.example`
+
+Add all the necessary keys
+
+Save file as `.env`
 
 ## 6. Create an ECR repository
 
