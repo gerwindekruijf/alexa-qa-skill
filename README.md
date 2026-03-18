@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="/assets/logo.svg" alt="Alexa Skill Logo" width="140" />
+  <img src="/assets/logo.png" alt="Alexa Skill Logo" width="140" />
 </p>
 
 <h1 align="center">Alexa Q&A Skill</h1>
